@@ -1,0 +1,15 @@
+spring:
+    application:
+        name: giftflow_backend
+
+    datasource:
+        url: jdbc:postgresql://localhost:5433/intbr_db
+        username: intbr_user
+        password: intbr_password
+
+    jpa: 
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+    liquibase:
+        change-log: classpath:db/changelog/db.changelog-master.yml
+        enabled: false
