@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: V1_001
+      author: Jones Vital
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: beaulty_services
+
+      changes:
+        - sql: 
+              CREATE TABLE IF NOT EXISTS beaulty_services (
+                service_id serial not null PRIMARY KEY,
+                name varchar(50) not null,
+                price decimal(8,2) not null,
+                created_date timestamp not null DEFAULT current_timestamp,
+                updated_date timestamp not null DEFAULT current_timestamp
+              );
