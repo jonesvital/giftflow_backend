@@ -8,6 +8,7 @@ import com.giftflow.giftflow_backend.entities.BeaultyService;
 import com.giftflow.giftflow_backend.repositories.BeaultyServiceRepository;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class BeaultyServiceService {
@@ -30,4 +31,22 @@ public class BeaultyServiceService {
         return dto;
     }
 
+    public List<BeaultyServiceDTO> listServices(){
+         return serviceRepository.findAll().stream().map((s) -> new BeaultyServiceDTO(s.getId(),s.getName(), s.getPrice())).toList();
+    }
+
+    public BeaultyServiceDTO updateService(BeaultyServiceDTO dto){
+        BeaultyService service = serviceRepository.findById(dto.getId()).orElse(null);
+        if(service != null){
+            service.setName(dto.getName());
+            service.setPrice(dto.getPrice());
+            service.setUpdatedDate(new Timestamp((new Date()).getTime()));
+            service = serviceRepository.save(service);
+        }
+        return dto;
+    }
+
+    public void deleteService(Integer id){
+        serviceRepository.deleteById(id);
+    }
 }
