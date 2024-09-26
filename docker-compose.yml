@@ -1,0 +1,29 @@
+services:
+
+    db:
+        container_name: giftflow_db
+        image: postgres:14.4-alpine
+        environment:
+            POSTGRES_USER: db_user
+            POSTGRES_PASSWORD: db_password
+            POSTGRES_DB: giftflow_db
+        restart: always
+        ports:
+            - "5434:5432"
+        networks:
+            - giftflow_network
+        volumes:
+            - giftflow_volume:/var/lib/postgresql
+        healthcheck:
+            test: ["CMD-SHELL", "sh -c 'pg_isready -U db_user -d giftflow_db'"]
+            interval: 10s
+            timeout: 3s
+            retries: 3
+
+
+volumes:
+    giftflow_volume: {}
+
+networks:
+    giftflow_network:
+        driver: bridge

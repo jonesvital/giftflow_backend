@@ -1,0 +1,15 @@
+spring:
+    application:
+        name: giftflow_backend
+
+    datasource:
+        url: jdbc:postgresql://localhost:5434/giftflow_db
+        username: db_user
+        password: db_password
+
+    jpa: 
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+    liquibase:
+        change-log: classpath:db/changelog/db.changelog-master.yml
+        enabled: true
