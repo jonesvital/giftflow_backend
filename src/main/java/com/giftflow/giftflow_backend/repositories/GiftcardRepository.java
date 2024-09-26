@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.giftflow.giftflow_backend.entities.Giftcard;
 
 @Repository
-interface GiftcardRepository extends JpaRepository<Giftcard, Integer>{
+public interface GiftcardRepository extends JpaRepository<Giftcard, Integer>{
     
 }
