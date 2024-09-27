@@ -29,6 +29,8 @@ dependencies {
 	implementation("org.liquibase:liquibase-core")
 	implementation("com.google.zxing:core:3.3.0")
 	implementation("com.google.zxing:javase:3.3.0")
+	implementation("com.amazonaws:aws-java-sdk:1.11.774")
+	implementation("com.amazonaws:aws-java-sdk-core:1.11.774")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")

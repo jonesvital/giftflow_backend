@@ -13,3 +13,11 @@ spring:
     liquibase:
         change-log: classpath:db/changelog/db.changelog-master.yml
         enabled: true
+
+aws:
+    credentials:
+        accessKey: AKIASBMNKRX55UFTKJ4K
+        secretKey: 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
+    s3:
+        bucketName: giftflow-bucket
+        region: us-west-1
