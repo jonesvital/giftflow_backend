@@ -20,7 +20,7 @@ databaseChangeLog:
                 purchase_date timestamp NOT NULL,
                 service_date timestamp,
                 giftcard_uuid uuid NOT NULL,
-                s3_url text NOT NULL,
+                s3_uri text NOT NULL,
                 created_date timestamp not null DEFAULT current_timestamp,
                 updated_date timestamp not null DEFAULT current_timestamp
               );

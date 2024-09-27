@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +42,13 @@ public class GiftCardService {
 
         BeaultyService beaultyService = beaultyServiceRepository.findById(dto.getServiceId()).get();
 
-        String uuid = UUID.randomUUID().toString();
+        UUID uuid = UUID.randomUUID();
 
-        BufferedImage giftcardImage = giftcardFactory.generate(dto.getToPersonName(), beaultyService.getName(), uuid);
+        BufferedImage giftcardImage = giftcardFactory.generate(dto.getToPersonName(), beaultyService.getName(), uuid.toString());
         
-        s3Manager.sendToS3(giftcardImage, uuid);
+        String s3FileUri = s3Manager.sendToS3(giftcardImage, uuid.toString());
 
-        Timestamp purchaseDate = new Timestamp(this.dateFormat.parse(dto.getPurchaseDate()).getTime());        
+        Timestamp purchaseDate = new Timestamp(new Date().getTime());        
 
         Giftcard card = new Giftcard();
         card.setFromPerson(dto.getFromPersonName());
@@ -56,6 +57,10 @@ public class GiftCardService {
         card.setToPersonPhone(dto.getToPersonPhone());
         card.setPurchaseDate(purchaseDate);
         card.setService(beaultyService);
+        card.setGiftcardUuid(uuid);
+        card.setS3Uri(s3FileUri);
+        card.setCreatedDate(new Timestamp((new Date()).getTime()));
+        card.setUpdatedDate(new Timestamp((new Date()).getTime()));
 
         giftcardRepository.save(card);
 

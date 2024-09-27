@@ -32,7 +32,7 @@ public class S3Manager {
     @Value("${aws.s3.region}")
     private String region;
 
-    public void sendToS3(BufferedImage giftcardImage, String uuid) throws IOException{
+    public String sendToS3(BufferedImage giftcardImage, String uuid) throws IOException{
 
         AmazonS3 client = AmazonS3Client.builder()
         .withRegion(region)
@@ -52,6 +52,8 @@ public class S3Manager {
         metadata.setContentLength(buffer.length);
 
         client.putObject(bucketName, fileName, is, metadata);
+
+        return "s3://"+bucketName+"/"+fileName;
     }
 
 
