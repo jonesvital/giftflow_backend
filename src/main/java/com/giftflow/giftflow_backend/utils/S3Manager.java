@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -19,16 +20,24 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 @Component
 public class S3Manager {
 
-    private final AmazonS3 client;
+    @Value("${aws.credentials.accessKey}")
+    private String accessKey;
 
-    public S3Manager() {
-        this.client = AmazonS3Client.builder()
-                .withRegion("us-east-1")
-                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("AKIASBMNKRX55UFTKJ4K", "UTb8wrq4MTNtbHyyhhbnSuSL7aaAQQyLGlfRauv8")))
-                .build();
-    }
+    @Value("${aws.credentials.secretKey}")
+    private String secretKey;
+
+    @Value("${aws.s3.bucketName}")
+    private String bucketName;
+    
+    @Value("${aws.s3.region}")
+    private String region;
 
     public void sendToS3(BufferedImage giftcardImage, String uuid) throws IOException{
+
+        AmazonS3 client = AmazonS3Client.builder()
+        .withRegion(region)
+        .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
+        .build();
 
         String fileName = uuid+".png";
 
@@ -42,7 +51,7 @@ public class S3Manager {
         metadata.setContentType("image/png");
         metadata.setContentLength(buffer.length);
 
-        this.client.putObject("giftflow-bucket", fileName, is, metadata);
+        client.putObject(bucketName, fileName, is, metadata);
     }
 
 
