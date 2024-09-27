@@ -1,10 +1,10 @@
 aws:
     credentials:
-        accessKey: AKIASBMNKRX55UFTKJ4K
-        secretKey: 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
+        accessKey: ${ACCESS_KEY}
+        secretKey: ${SECRET_KEY}
     s3:
-        bucketName: giftflow-bucket
-        region: us-east-1
+        bucketName: ${BUCKET_NAME}
+        region: ${S3_REGION}
 
 spring:
     application:
