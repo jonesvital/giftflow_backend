@@ -1,3 +1,11 @@
+aws:
+    credentials:
+        accessKey: ${ACCESS_KEY}
+        secretKey: ${SECRET_KEY}
+    s3:
+        bucketName: ${BUCKET_NAME}
+        region: ${S3_REGION}
+
 spring:
     application:
         name: giftflow_backend
@@ -13,3 +21,5 @@ spring:
     liquibase:
         change-log: classpath:db/changelog/db.changelog-master.yml
         enabled: true
+
+
