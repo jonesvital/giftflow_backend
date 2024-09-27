@@ -22,7 +22,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 @Component
 public class GiftcardFactory {
     
-    public BufferedImage generate(String toPersonName, String uuid) throws WriterException, IOException, FontFormatException {
+    public BufferedImage generate(String toPersonName, String serviceName, String uuid) throws WriterException, IOException, FontFormatException {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Font font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/static/PlayfairDisplay-Italic-VariableFont_wght.ttf"));
         ge.registerFont(font);
@@ -40,7 +40,7 @@ public class GiftcardFactory {
         g.drawString(toPersonName, 250, 80);
 
         g.setFont(new Font("Playfair Display", Font.ITALIC, 30));
-        g.drawString("Micropigmentação", 200, 180);
+        g.drawString(serviceName, 200, 180);
 
         return template;
     }

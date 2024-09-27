@@ -25,6 +25,9 @@ public class GiftCardDTO {
     @JsonProperty("service_name")
     private String serviceName;
 
+    @JsonProperty("service_id")
+    private Integer serviceId;
+
     @JsonProperty("purchase_date")
     private String purchaseDate;
 
