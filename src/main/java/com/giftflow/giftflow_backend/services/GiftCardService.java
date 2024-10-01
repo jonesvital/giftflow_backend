@@ -5,12 +5,18 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.giftflow.giftflow_backend.dto.GiftCardDTO;
+import com.giftflow.giftflow_backend.entities.BeaultyService;
+import com.giftflow.giftflow_backend.entities.Giftcard;
+import com.giftflow.giftflow_backend.repositories.BeaultyServiceRepository;
 import com.giftflow.giftflow_backend.repositories.GiftcardRepository;
 import com.giftflow.giftflow_backend.utils.GiftcardFactory;
 import com.giftflow.giftflow_backend.utils.S3Manager;
@@ -23,34 +29,75 @@ public class GiftCardService {
     private GiftcardRepository giftcardRepository;
 
     @Autowired
+    private BeaultyServiceRepository beaultyServiceRepository;
+
+    @Autowired
     private GiftcardFactory giftcardFactory;
 
     @Autowired
     private S3Manager s3Manager;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public BufferedImage createGiftCard(GiftCardDTO dto) throws ParseException, WriterException, IOException, FontFormatException{
 
-        String uuid = UUID.randomUUID().toString();
+        BeaultyService beaultyService = beaultyServiceRepository.findById(dto.getServiceId()).get();
 
-        BufferedImage giftcardImage = giftcardFactory.generate(dto.getToPersonName(), uuid);
+        UUID uuid = UUID.randomUUID();
+
+        BufferedImage giftcardImage = giftcardFactory.generate(dto.getToPersonName(), beaultyService.getName(), uuid.toString());
         
-        s3Manager.sendToS3(giftcardImage, uuid);
+        String s3FileUri = s3Manager.sendToS3(giftcardImage, uuid.toString());      
 
-        // Timestamp purchaseDate = new Timestamp(
-        //     this.dateFormat.parse(dto.getPurchaseDate()).getTime());
+        Giftcard card = new Giftcard();
+        card.setFromPerson(dto.getFromPersonName());
+        card.setFromPersonPhone(dto.getFromPersonPhone());
+        card.setToPerson(dto.getToPersonName());
+        card.setToPersonPhone(dto.getToPersonPhone());
+        card.setPurchaseDate(new Date());
+        card.setService(beaultyService);
+        card.setGiftcardUuid(uuid);
+        card.setS3Uri(s3FileUri);
+
+        giftcardRepository.save(card);
 
         return giftcardImage;
+        
+    }
 
-        // Giftcard card = new Giftcard();
-        // card.setFromPerson(dto.getFromPersonName());
-        // card.setFromPersonPhone(dto.getFromPersonPhone());
-        // card.setToPerson(dto.getToPersonName());
-        // card.setToPersonPhone(dto.getToPersonPhone());
-        // card.setPurchaseDate(purchaseDate);
+    public List<GiftCardDTO> listarGiftcards(){
+        
+        List<Giftcard> giftcards = giftcardRepository.findAll();
+
+
+        List<GiftCardDTO> dtos = new ArrayList<>();
 
         
+        giftcards.forEach((gc) -> {
+
+            String serviceDate = null;
+
+            if(gc.getServiceDate() != null){
+                serviceDate = dateFormat.format(gc.getServiceDate());
+            }
+
+            GiftCardDTO dto = new GiftCardDTO(
+                gc.getId(), 
+                gc.getFromPerson(), 
+                gc.getFromPersonPhone(), 
+                gc.getToPerson(), 
+                gc.getToPersonPhone(), 
+                gc.getService().getName(), 
+                gc.getService().getId(), 
+                dateFormat.format(gc.getPurchaseDate()), 
+                serviceDate);
+
+            dtos.add(dto);
+
+        });
+
+        return dtos;
+
     }
 
 

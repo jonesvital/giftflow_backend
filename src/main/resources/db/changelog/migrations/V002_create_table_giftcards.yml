@@ -17,12 +17,10 @@ databaseChangeLog:
                 from_person_phone varchar(11),
                 to_person varchar(255) NOT NULL,
                 to_person_phone varchar(11),
-                purchase_date timestamp NOT NULL,
-                service_date timestamp,
+                purchase_date date NOT NULL,
+                service_date date,
                 giftcard_uuid uuid NOT NULL,
-                s3_url text NOT NULL,
-                created_date timestamp not null DEFAULT current_timestamp,
-                updated_date timestamp not null DEFAULT current_timestamp
+                s3_uri text NOT NULL
               );
 
               alter table giftcards add constraint giftcard_services_fk foreign key (service_id_service) references beaulty_services (service_id);

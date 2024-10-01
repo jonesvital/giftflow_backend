@@ -13,7 +13,5 @@ databaseChangeLog:
               CREATE TABLE IF NOT EXISTS beaulty_services (
                 service_id serial not null PRIMARY KEY,
                 name varchar(50) not null,
-                price decimal(8,2) not null,
-                created_date timestamp not null DEFAULT current_timestamp,
-                updated_date timestamp not null DEFAULT current_timestamp
+                price decimal(8,2) not null
               );

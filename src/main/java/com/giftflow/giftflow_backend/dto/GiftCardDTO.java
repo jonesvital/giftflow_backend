@@ -2,9 +2,11 @@ package com.giftflow.giftflow_backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class GiftCardDTO {
 
     @JsonProperty("id")
@@ -24,6 +26,9 @@ public class GiftCardDTO {
 
     @JsonProperty("service_name")
     private String serviceName;
+
+    @JsonProperty("service_id")
+    private Integer serviceId;
 
     @JsonProperty("purchase_date")
     private String purchaseDate;

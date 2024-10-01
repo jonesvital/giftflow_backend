@@ -7,10 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
-import java.sql.Timestamp;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Table(name = "beaulty_services")
@@ -28,12 +24,5 @@ public class BeaultyService {
     @Column(name = "price")
     private Double price;
 
-    @CreatedDate
-    @Column(name = "created_date")
-    private Timestamp createdDate;
-
-    @LastModifiedDate
-    @Column(name = "updated_date")
-    private Timestamp updatedDate;
 
 }
