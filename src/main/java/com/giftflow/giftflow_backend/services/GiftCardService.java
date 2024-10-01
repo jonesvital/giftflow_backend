@@ -3,10 +3,11 @@ package com.giftflow.giftflow_backend.services;
 import java.awt.FontFormatException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,26 +47,57 @@ public class GiftCardService {
 
         BufferedImage giftcardImage = giftcardFactory.generate(dto.getToPersonName(), beaultyService.getName(), uuid.toString());
         
-        String s3FileUri = s3Manager.sendToS3(giftcardImage, uuid.toString());
-
-        Timestamp purchaseDate = new Timestamp(new Date().getTime());        
+        String s3FileUri = s3Manager.sendToS3(giftcardImage, uuid.toString());      
 
         Giftcard card = new Giftcard();
         card.setFromPerson(dto.getFromPersonName());
         card.setFromPersonPhone(dto.getFromPersonPhone());
         card.setToPerson(dto.getToPersonName());
         card.setToPersonPhone(dto.getToPersonPhone());
-        card.setPurchaseDate(purchaseDate);
+        card.setPurchaseDate(new Date());
         card.setService(beaultyService);
         card.setGiftcardUuid(uuid);
         card.setS3Uri(s3FileUri);
-        card.setCreatedDate(new Timestamp((new Date()).getTime()));
-        card.setUpdatedDate(new Timestamp((new Date()).getTime()));
 
         giftcardRepository.save(card);
 
         return giftcardImage;
         
+    }
+
+    public List<GiftCardDTO> listarGiftcards(){
+        
+        List<Giftcard> giftcards = giftcardRepository.findAll();
+
+
+        List<GiftCardDTO> dtos = new ArrayList<>();
+
+        
+        giftcards.forEach((gc) -> {
+
+            String serviceDate = null;
+
+            if(gc.getServiceDate() != null){
+                serviceDate = dateFormat.format(gc.getServiceDate());
+            }
+
+            GiftCardDTO dto = new GiftCardDTO(
+                gc.getId(), 
+                gc.getFromPerson(), 
+                gc.getFromPersonPhone(), 
+                gc.getToPerson(), 
+                gc.getToPersonPhone(), 
+                gc.getService().getName(), 
+                gc.getService().getId(), 
+                dateFormat.format(gc.getPurchaseDate()), 
+                serviceDate);
+
+            dtos.add(dto);
+
+        });
+
+        return dtos;
+
     }
 
 

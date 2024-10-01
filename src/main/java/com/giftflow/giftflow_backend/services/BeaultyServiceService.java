@@ -1,7 +1,5 @@
 package com.giftflow.giftflow_backend.services;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +21,6 @@ public class BeaultyServiceService {
         BeaultyService service = new BeaultyService();
         service.setName(dto.getName());
         service.setPrice(dto.getPrice());
-        service.setCreatedDate(new Timestamp((new Date()).getTime()));
-        service.setUpdatedDate(new Timestamp((new Date()).getTime()));
 
         service = serviceRepository.save(service);
         dto.setId(service.getId());
@@ -41,7 +37,6 @@ public class BeaultyServiceService {
         if(service != null){
             service.setName(dto.getName());
             service.setPrice(dto.getPrice());
-            service.setUpdatedDate(new Timestamp((new Date()).getTime()));
             serviceRepository.save(service);
         }
         return dto;

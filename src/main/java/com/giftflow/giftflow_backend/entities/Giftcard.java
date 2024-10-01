@@ -1,6 +1,6 @@
 package com.giftflow.giftflow_backend.entities;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -11,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Data;
 
 @Data
@@ -40,20 +42,16 @@ public class Giftcard {
     private String toPersonPhone;
 
     @Column(name = "purchase_date")
-    private Timestamp purchaseDate;
+    @Temporal(TemporalType.DATE)
+    private Date purchaseDate;
 
     @Column(name = "service_date")
-    private Timestamp serviceDate;
+    @Temporal(TemporalType.DATE)
+    private Date serviceDate;
 
     @Column(name = "giftcard_uuid")
     private UUID giftcardUuid;
 
     @Column(name = "s3_uri")
     private String s3Uri;
-
-    @Column(name = "created_date")
-    private Timestamp createdDate;
-
-    @Column(name = "updated_date")
-    private Timestamp updatedDate;
 }
