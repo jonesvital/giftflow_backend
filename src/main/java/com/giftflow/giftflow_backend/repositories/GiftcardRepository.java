@@ -1,5 +1,7 @@
 package com.giftflow.giftflow_backend.repositories;
 
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,6 +17,6 @@ public interface GiftcardRepository extends JpaRepository<Giftcard, Integer>{
                 """,
         nativeQuery = true
     )
-    public Giftcard getGiftcardByUUID(String uuid);
+    public Giftcard getGiftcardByUUID(UUID uuid);
     
 }
