@@ -22,4 +22,7 @@ spring:
         change-log: classpath:db/changelog/db.changelog-master.yml
         enabled: true
 
+application:
+    domain: ${GIFTFLOW_DOMAIN}
+
 

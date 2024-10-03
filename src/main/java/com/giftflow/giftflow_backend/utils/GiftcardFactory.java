@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.zxing.BarcodeFormat;
@@ -21,14 +22,19 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 @Component
 public class GiftcardFactory {
+
+    @Value("${application.domain}")
+    private String domain;
     
     public BufferedImage generate(String toPersonName, String serviceName, String uuid) throws WriterException, IOException, FontFormatException {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Font font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/static/PlayfairDisplay-Italic-VariableFont_wght.ttf"));
         ge.registerFont(font);
 
+        String url = "http://"+domain+":8080/giftcard/"+uuid+"/image";
+
         QRCodeWriter qrWriter = new QRCodeWriter();
-        BitMatrix qrCode = qrWriter.encode(uuid, BarcodeFormat.QR_CODE, 100, 100);
+        BitMatrix qrCode = qrWriter.encode(url, BarcodeFormat.QR_CODE, 100, 100);
         BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(qrCode);
 
         BufferedImage template = ImageIO.read(new File("src/main/resources/static/template.png"));
