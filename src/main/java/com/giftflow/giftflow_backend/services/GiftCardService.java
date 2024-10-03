@@ -102,5 +102,10 @@ public class GiftCardService {
         giftcardRepository.deleteById(id);
     }
 
+    public BufferedImage getImageByUUID(String uuid) throws IOException{
+        BufferedImage image = s3Manager.getS3File(uuid);
+        return image;
+    }
+
 
 }

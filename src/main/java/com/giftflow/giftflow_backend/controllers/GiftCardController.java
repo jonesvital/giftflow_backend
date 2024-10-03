@@ -46,4 +46,9 @@ public class GiftCardController {
         giftcardService.deleteGiftcard(id);
     }
     
+    @GetMapping(path = "/{uuid}", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<BufferedImage> getGiftcardByUUID(@PathVariable("uuid") String uuid) throws IOException {
+        BufferedImage giftcardImage = giftcardService.getImageByUUID(uuid);
+        return ResponseEntity.ok().body(giftcardImage);
+    }
 }
