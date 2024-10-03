@@ -35,5 +35,11 @@ public class GiftCardDTO {
 
     @JsonProperty("service_date")
     private String serviceDate;
+
+    @JsonProperty("giftcard_uuid")
+    private String giftcardUuid;
+
+    @JsonProperty("s3_uri")
+    private String s3Uri;
     
 }

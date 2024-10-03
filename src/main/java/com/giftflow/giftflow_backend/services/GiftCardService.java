@@ -69,9 +69,7 @@ public class GiftCardService {
         
         List<Giftcard> giftcards = giftcardRepository.findAll();
 
-
         List<GiftCardDTO> dtos = new ArrayList<>();
-
         
         giftcards.forEach((gc) -> {
 
@@ -90,7 +88,9 @@ public class GiftCardService {
                 gc.getService().getName(), 
                 gc.getService().getId(), 
                 dateFormat.format(gc.getPurchaseDate()), 
-                serviceDate);
+                serviceDate,
+                null,
+                null);
 
             dtos.add(dto);
 
@@ -100,5 +100,39 @@ public class GiftCardService {
 
     }
 
+    public void deleteGiftcard(Integer id){
+        giftcardRepository.deleteById(id);
+    }
+
+    public BufferedImage getImageByUUID(String uuid) throws IOException{
+        BufferedImage image = s3Manager.getS3File(uuid);
+        return image;
+    }
+
+    public GiftCardDTO getGiftcardByUUID(String uuid) {
+
+        Giftcard giftcard = giftcardRepository.getGiftcardByUUID(UUID.fromString(uuid));
+
+        String serviceDate = null;
+
+        if(giftcard.getServiceDate() != null){
+            serviceDate = dateFormat.format(giftcard.getServiceDate());
+        }
+
+        GiftCardDTO dto = new GiftCardDTO(
+            giftcard.getId(), 
+            giftcard.getFromPerson(), 
+            giftcard.getFromPersonPhone(), 
+            giftcard.getToPerson(), 
+            giftcard.getToPersonPhone(), 
+            giftcard.getService().getName(), 
+            giftcard.getService().getId(), 
+            dateFormat.format(giftcard.getPurchaseDate()), 
+            serviceDate,
+            giftcard.getGiftcardUuid().toString(),
+            giftcard.getS3Uri());
+
+        return dto;
+    }
 
 }

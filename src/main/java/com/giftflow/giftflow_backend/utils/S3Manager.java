@@ -16,6 +16,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
 
 @Component
 public class S3Manager {
@@ -54,6 +55,21 @@ public class S3Manager {
         client.putObject(bucketName, fileName, is, metadata);
 
         return "s3://"+bucketName+"/"+fileName;
+    }
+
+    public BufferedImage getS3File(String uuid) throws IOException{
+
+        AmazonS3 client = AmazonS3Client.builder()
+        .withRegion(region)
+        .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
+        .build();
+
+        String key = uuid+".png";
+        S3Object o = client.getObject(bucketName, key);
+
+        BufferedImage image = ImageIO.read(o.getObjectContent());
+
+        return image;
     }
 
 
