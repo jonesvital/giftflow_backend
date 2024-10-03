@@ -69,9 +69,7 @@ public class GiftCardService {
         
         List<Giftcard> giftcards = giftcardRepository.findAll();
 
-
         List<GiftCardDTO> dtos = new ArrayList<>();
-
         
         giftcards.forEach((gc) -> {
 
@@ -98,6 +96,10 @@ public class GiftCardService {
 
         return dtos;
 
+    }
+
+    public void deleteGiftcard(Integer id){
+        giftcardRepository.deleteById(id);
     }
 
 
